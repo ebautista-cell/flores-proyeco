@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#15130f">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Flores amarillas | PROYECO</title>
+<style>
+:root{--bg:#11100d;--cream:#fff8df;--yellow:#ffd84a;--wine:#C00000;--green:#66834d}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;min-height:100%;background:
+radial-gradient(circle at 50% 90%,#332b12 0,transparent 40%),
+linear-gradient(#0d0d0c,#18150f);color:var(--cream);font-family:Arial,sans-serif}
+body{min-height:100vh;min-height:100dvh;overflow-x:hidden;overflow-y:auto;-webkit-text-size-adjust:100%;touch-action:manipulation}
+.screen{position:absolute;inset:0;min-height:100vh;min-height:100dvh;display:grid;place-items:center;padding:calc(24px + env(safe-area-inset-top)) 22px calc(24px + env(safe-area-inset-bottom));text-align:center;transition:.8s}
+.card{max-width:560px}.brand{font-weight:800;letter-spacing:.18em;color:#e1d8bb;font-size:13px}
+.brand b{color:#ef3b32}.date{margin-top:12px;letter-spacing:.18em;font-size:11px;color:#bdb394}
+h1{font-family:Georgia,serif;font-size:clamp(38px,10vw,66px);line-height:1;margin:18px 0}
+p{font-size:16px;line-height:1.6;color:#eee7d1}
+button{margin-top:22px;border:1px solid #756b42;background:#211e13;color:white;padding:15px 22px;min-height:48px;border-radius:999px;font-weight:700;font-size:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+button:active{transform:scale(.97)}.hidden{opacity:0;pointer-events:none;transform:scale(.98)}
+#garden{position:absolute;inset:0;min-height:100vh;min-height:100dvh;pointer-events:none;overflow:hidden}
+.flower{position:absolute;bottom:-12vh;width:8px;height:var(--h);background:linear-gradient(90deg,#405534,#78965d,#405534);border-radius:10px;transform-origin:bottom;animation:grow 1.35s cubic-bezier(.2,.8,.2,1) forwards}
+.head{position:absolute;left:50%;top:-27px;width:58px;height:58px;transform:translateX(-50%) scale(0);animation:bloom .7s 1s forwards}
+.petal{position:absolute;left:22px;top:3px;width:14px;height:27px;border-radius:70% 70% 45% 45%;background:linear-gradient(#ffe96b,#f3bd22);transform-origin:7px 26px}
+.center{position:absolute;left:19px;top:19px;width:20px;height:20px;border-radius:50%;background:#65431d;box-shadow:inset 0 0 0 4px #8c6326}
+.leaf{position:absolute;width:28px;height:13px;background:#66834d;border-radius:100% 0 100% 0}
+.l1{top:45%;left:-23px;transform:rotate(25deg)}.l2{top:62%;left:4px;transform:scaleX(-1) rotate(20deg)}
+@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}@keyframes bloom{to{transform:translateX(-50%) scale(1)}}
+#message{position:fixed;z-index:5;left:16px;right:16px;bottom:calc(14px + env(safe-area-inset-bottom));max-width:620px;max-height:calc(100dvh - 28px - env(safe-area-inset-top) - env(safe-area-inset-bottom));overflow-y:auto;-webkit-overflow-scrolling:touch;margin:auto;background:#15140fee;border:1px solid #5c5436;border-radius:22px;padding:18px;backdrop-filter:blur(12px);opacity:0;transform:translateY(20px);transition:.7s}
+#message.show{opacity:1;transform:none}#message strong{display:block;font:26px Georgia,serif;color:#ffe36b;margin-bottom:7px}
+.signature{font-weight:800;letter-spacing:.12em}.signature span{color:#ef3b32}
+.small{font-size:12px;color:#bdb394}
+@media (max-width:480px){
+ .card{width:100%}
+ h1{font-size:clamp(34px,12vw,52px)}
+ p{font-size:15px;line-height:1.5}
+ #message{padding:16px;border-radius:18px}
+ #message strong{font-size:23px}
+ #message button{width:100%}
+}
+</style>
+</head>
+<body>
+<section id="intro" class="screen">
+ <div class="card">
+  <div class="brand"><b>PRO</b>YECO</div>
+  <div class="date">21 · SEPTIEMBRE · 2026</div>
+  <h1>Tenemos algo<br>para <span id="introName">ti</span>.</h1>
+  <p>Un pequeño detalle para llenar tu día de color y buena energía. 💛</p>
+  <button id="receive">Recibir mis flores 🌱</button>
+ </div>
+</section>
+<div id="garden"></div>
+<div id="message">
+ <strong>Para <span id="finalName">ti</span> 🌻</strong>
+ <p>Que estas flores amarillas te recuerden la alegría, energía y dedicación que aportas cada día.</p>
+ <p>Gracias por ser parte de nuestro equipo. 💛</p>
+ <p>Feliz 21 de septiembre.</p>
+ <p class="signature"><span>PRO</span>YECO</p>
+ <button id="again">Verlas florecer otra vez</button>
+ <p class="small">Este detalle fue preparado especialmente para ti.</p>
+</div>
+<script>
+const params=new URLSearchParams(location.search);
+const raw=(params.get("nombre")||"").trim();
+const name=raw ? raw.slice(0,60) : "ti";
+document.querySelector("#introName").textContent=name;
+document.querySelector("#finalName").textContent=name;
+document.title=raw ? `Flores para ${name} | PROYECO` : "Flores amarillas | PROYECO";
+
+const intro=document.querySelector("#intro"),garden=document.querySelector("#garden"),msg=document.querySelector("#message");
+const xs=[11,22,34,47,59,72,86,28,65],hs=[43,57,49,68,53,61,46,72,70];
+function petals(){let s="";for(let i=0;i<12;i++)s+=`<i class="petal" style="transform:rotate(${i*30}deg)"></i>`;return s+'<i class="center"></i>'}
+function bloom(){
+ garden.innerHTML="";msg.classList.remove("show");intro.classList.add("hidden");
+ xs.forEach((x,i)=>setTimeout(()=>{const f=document.createElement("div");f.className="flower";f.style.left=`calc(${x}% - 4px)`;f.style.setProperty("--h",hs[i]+"vh");f.innerHTML=`<span class="leaf l1"></span><span class="leaf l2"></span><span class="head">${petals()}</span>`;garden.appendChild(f)},i*220));
+ setTimeout(()=>msg.classList.add("show"),3500);
+}
+document.querySelector("#receive").onclick=bloom;
+document.querySelector("#again").onclick=bloom;
+</script>
+</body>
+</html>
